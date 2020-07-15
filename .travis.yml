@@ -1,31 +1,31 @@
 dist: xenial
 sudo: required
-
 language: node_js
 node_js:
-- "8.11.3"
-
+- 8.11.3
 before_install:
 - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
 - sudo apt-get update -qq
-
 install:
 - sudo apt-get install -qq g++-8
 - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
-- git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && git pull && ./emsdk install latest && ./emsdk activate latest && . ./emsdk_env.sh && cd ..
+- git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && git pull &&
+  ./emsdk install latest && ./emsdk activate latest && . ./emsdk_env.sh && cd ..
 - git submodule init
 - git submodule update
-
 script:
 - make test
-
 after_success:
 - git config --global user.email "travis@travis-ci.org"
 - git config --global user.name "Travis CI"
 - cd web
 - git init
-- git remote add origin https://${GH_TOKEN}@github.com/mmore500/cut-empirical-project.git > /dev/null 2>&1
+- git remote add origin https://${GH_TOKEN}@github.com/mmore500/cut-empirical-project.git
+  > /dev/null 2>&1
 - git checkout -b gh-pages
 - git add .
 - git commit --message "Travis build ${TRAVIS_BUILD_NUMBER}"
 - test ${TRAVIS_BRANCH} = "master" && git push --force --quiet origin gh-pages
+env:
+  global:
+    secure: bJ9SghVugjUUggAtq1g0/S+lDHE4jirWwfEO8XcrdgoMljod4CWjLSOQjuSzzGUdQHMQntNEbehC1FEonx0H2j6czU7qDJk8uaFn4LLwI6384cya3pWADhNfNDMvTpMeNx/YfBFT9cpqIAxvZAPzTYmWAsdU1+rWh1WDEuwY8eUqRQ+wVkgf4883nAGwAk/M5CTGNmL2FAtNL9WL6le6aGwHz2Mb651/vuO5DnZEUlbZ2HeZ9hrERKH9vfOVf9NdtkhSo6IjIPVh9ok3uFR5jeGqsob0a/eGAF+Bw1kaQSB8oY1mjwg4Xpy0d3X1qxN5/LqJHyT8UcE0uo6LZFVWohJXqMxg7Lt3REYls7/5lvvFDbqNyk/M2vtQ1LFgZsVntvr/GbPwUajM4tUAblcL3dt5ZKL0Skr3+3+VXSaGTv41Ld44xMknPXmyNJrrTsOMpc2PZ+vlD4k6ZXbotr1Yp6rX0vjOLWh+OFNpOr4+vOYiwycCk7GpyaTEteNsBhOX3CDpmUeZmIF2Q2TIN9Q3I4knu4cwvXpw8TTDtTctyWlN/t33gdfEoJnpwxnPCxHZEM5KGnLDLBFmpRPSoavfWNN/gLMB8kq/YhNpLYXyGHRusSnlMbt9UfLiieC9HXPKfEzJN4IpdglE2cfxYzxo8qqrevIBWu3Oex4RmTlGWjQ=
